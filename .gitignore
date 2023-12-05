@@ -1,3 +1,8 @@
+# exclude template
+q.py
+q.txt
+
+
 # Created by https://www.toptal.com/developers/gitignore/api/pycharm+all,venv,python,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm+all,venv,python,macos
 
