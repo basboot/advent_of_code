@@ -4,22 +4,21 @@ import math
 file1 = open('q5a.txt', 'r')
 lines = file1.readlines()
 
-# first line contains seeds: 79 14 55 13
+# first line contains the seed numbers (seeds: 79 14 55 13)
 seeds = [int(x) for x in lines[0].split(": ")[1].split(" ")]
 
-map_switch = True
+map_switch = True # switch to next map
 map_from = None
 map_to = None
 
 mappings = {}
 
-# skip first line with seeds
+# skip first line with seeds (already processed), to start with mappings
 for i in range(1, len(lines)):
     row = lines[i].rstrip()
 
     # activate map switch on empty line
     if row == "":
-        # print("switch")
         map_switch = True
         continue
 
@@ -27,13 +26,11 @@ for i in range(1, len(lines)):
     if map_switch:
         # input:  seed-to-soil map:
         map_from, map_to = row.replace(" map:", "").split("-to-")
-        # print(map_from, map_to)
         map_switch = False
         continue
 
     # read mapping
     start_range_to, start_range_from, map_range = [int(x) for x in row.split(" ")]
-    # print(start_range_to, start_range_from, map_range)
 
     # add mapping
     if map_from not in mappings:
@@ -45,39 +42,35 @@ for i in range(1, len(lines)):
 
 
 def perform_mapping(map_number, map_from):
-    # print(f"{map_from} {map_number}")
-    # stop when there is no mapping
+    # stop when there is no (next) mapping
     if map_from not in mappings:
         return map_number
 
-    # find mapping, if there is any
+    # find mapping for this number, if there is any (else just keep same map_number)
     for mapping in mappings[map_from]["mappings"]:
         start_range_from, start_range_to, map_range = mapping
         if map_number >= start_range_from and map_number <= start_range_from + map_range:
-            # print("match", start_range_from, start_range_to, map_range)
             map_number = start_range_to + (map_number - start_range_from)
-            break # only one mapping possible
 
     # go to next mapping
-    # print(f"{mappings[map_from]['map_to']} {map_number}")
     return perform_mapping(map_number, mappings[map_from]["map_to"])
 
-# perform mapping for each seed
-
+# perform mapping for each seed, and find lowest result
 lowest = math.inf
 for seed in seeds:
     lowest = min(lowest, perform_mapping(seed, "seed"))
 
 print("Part 1", lowest)
 
+# perform mapping for ranges of seeds, and find lowest result
 lowest = math.inf
 for i in range(0, len(seeds), 2):
     first_seed = seeds[i]
     seed_range = seeds[i+1]
 
-    print(first_seed, seed_range)
-
     for j in range(seed_range + 1):
         lowest = min(lowest, perform_mapping(first_seed + j, "seed"))
 
 print("Part 2", lowest)
+
+# TODO: Too slow for large ranges, need other approach => 5b
