@@ -20,7 +20,7 @@ def cover_spot(spot, type):
             coverage[spot] = type
 
 
-def cover_tunnel(sensor, beacon):
+def cover_area(sensor, beacon):
     cover_spot(sensor, SENSOR)
     cover_spot(beacon, BEACON)
 
@@ -44,7 +44,7 @@ for line in lines:
     sensor, beacon = [literal_eval(x) for x in modified_input.split(":")]
 
     print(sensor, beacon)
-    cover_tunnel(sensor, beacon)
+    cover_area(sensor, beacon)
 
 count_coverage = 0
 for covered_spot in coverage:
@@ -52,4 +52,6 @@ for covered_spot in coverage:
         count_coverage += 1
 
 print("Part 1", count_coverage)
+
+# TODO: solution too slow for real problem, try again
 
