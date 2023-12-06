@@ -27,18 +27,39 @@ blocks = [
     )
 ]
 
+highest_part = 0
+
 world = {
-    (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6) # floot
+    (0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0) # floot
 }
 
-current_shape = 0
-current_level = 0
-block_fixed = True
+DEBUG = True
 
-for line in lines:
-    row = line.rstrip()
-    print("input: ", row)
+def show_world(w, h, block, message, debug=DEBUG):
+    if DEBUG:
+        return
+    # create copy of world
+    world_copy = world.copy()
 
+    # add block to world
+    for pixel in block:
+        # print(f"add {pixel}")
+        world_copy.add(tuple(pixel))
+
+    print(f"---------{message}-----------")
+
+    # show world
+    for y in range(h, 0, -1):
+        for x in range(w):
+            if (x, y) in world_copy:
+                print("#", end="")
+            else:
+                print(".", end="")
+        print()
+
+jet_pattern = lines[0].rstrip()
+
+# create block = array of pixels, starting at height 'level', 2 from the wall
 def create_block(shape, level):
     block = []
     for pixel in blocks[shape]:
@@ -50,28 +71,69 @@ def move_block(block, direction):
     # TODO: check if no places are occupied in direction (x, y)
     # True if possible, return new position
     # False if not possible, return old position
+    dx, dy = direction
+
+    # check possible
+    for pixel in block:
+        if (pixel[0] + dx, pixel[1] + dy) in world or pixel[0] + dx < 0 or pixel[0] + dx > 6:
+            return False, block
+    # do move
+    for pixel in block:
+        pixel[0] += dx
+        pixel[1] += dy
+
     return True, block
 
-falling_block = None
 
-for i in range(10):
+def add_block_to_world(block):
+    global world
+    global highest_part
+
+    for pixel in block:
+        world.add((pixel[0], pixel[1]))
+        highest_part = max(highest_part, pixel[1])
+
+next_shape = 0 # next block to pick
+block_fixed = True # current block cannot move
+falling_block = None # current block
+jet_i = 0
+
+n_blocks = 0
+MAX_BLOCKS = 2022
+
+while n_blocks < MAX_BLOCKS:
     # create new block if last block was stuck
     if block_fixed:
-        falling_block = create_block(current_shape, current_level)
-        current_shape = (current_shape + 1) % len(blocks) # prepare next block
+        falling_block = create_block(next_shape, highest_part + 4)
+        next_shape = (next_shape + 1) % len(blocks) # prepare next block
+        block_fixed = False
 
-    # jets # TODO: get direction from input
-    _, falling_block = move_block(falling_block, (0, 0))
+        if falling_block is not None:
+            show_world(7, highest_part + 10, falling_block, "NEW BLOCK")
+
+
+    # jets
+    direction = (-1, 0) if jet_pattern[jet_i % len(jet_pattern)] == "<" else (+1, 0)
+    _, falling_block = move_block(falling_block, direction)
+
+    if falling_block is not None:
+        show_world(7, highest_part + 10, falling_block, f"PUSHED {jet_pattern[jet_i % len(jet_pattern)]}")
+
+    jet_i += 1
 
     # gravity
     not_stuck, falling_block = move_block(falling_block, (0, -1))
+    if falling_block is not None:
+        show_world(7, highest_part + 10, falling_block, "FALLEN")
 
     if not not_stuck:
         block_fixed = True
-        current_level = falling_block[-1][1] # y pos of last pixel
+        add_block_to_world(falling_block)
+        n_blocks += 1
+        falling_block = None
 
-        # add pixels to world
-
+show_world(7, highest_part + 2, [], "END")
+print(f"Part 1, highest {highest_part}")
 
 
 
