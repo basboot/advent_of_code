@@ -33,12 +33,13 @@ def analyse_arrangement(current_arrangement):
     return arrangement
 
 def is_legal_arrangement(current_arrangement, known, complete=False):
-    arrangement = analyse_arrangement(current_arrangement)
+    if current_arrangement[-1] == 0:
+        current_arrangement = current_arrangement[:len(current_arrangement) - 1]
 
     if complete:
-        return arrangement == known
+        return current_arrangement == known
     else:
-        return arrangement == known[:len(arrangement)]
+        return current_arrangement == known[:len(current_arrangement)]
 
 def create_legal_arrangements(current_arrangement, unknown, known, depth, sum_known, sum_solution):
     global legal_arrangements
@@ -60,13 +61,27 @@ def create_legal_arrangements(current_arrangement, unknown, known, depth, sum_kn
 
     # known characters can always be added
     if unknown[depth] in [".", "#"]:
-        create_legal_arrangements(current_arrangement + [unknown[depth]], unknown, known, depth + 1, sum_known, sum_solution + (1 if unknown[depth] == "#" else 0))
+        new_arrangement = current_arrangement.copy()
+        if unknown[depth] == "#":
+            new_arrangement[-1] += 1
+        else:
+            if new_arrangement[-1] > 0:
+                new_arrangement.append(0)
+
+        create_legal_arrangements(new_arrangement, unknown, known, depth + 1, sum_known, sum_solution + (1 if unknown[depth] == "#" else 0))
     else:
         assert unknown[depth] == "?", f"Illegal char in unknown arrangement {unknown[depth]}"
 
         # try both options for ?
         for spring_option in [".", "#"]:
-            create_legal_arrangements(current_arrangement + [spring_option], unknown, known, depth + 1, sum_known, sum_solution + (1 if spring_option == "#" else 0))
+            new_arrangement = current_arrangement.copy()
+            if spring_option == "#":
+                new_arrangement[-1] += 1
+            else:
+                if new_arrangement[-1] > 0:
+                    new_arrangement.append(0)
+
+            create_legal_arrangements(new_arrangement, unknown, known, depth + 1, sum_known, sum_solution + (1 if spring_option == "#" else 0))
 
 
 
@@ -77,7 +92,7 @@ legal_arrangements = 0
 total = 0
 for unknown, known in springs:
     legal_arrangements = 0
-    create_legal_arrangements([], unknown, known, 0, sum(known), 0)
+    create_legal_arrangements([0], unknown, known, 0, sum(known), 0)
     total += legal_arrangements
 
     # print("-", len(legal_arrangements))
@@ -87,3 +102,4 @@ print("Part 1", total)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 # --- 1.7099559307098389 seconds ---
+# --- 0.9779319763183594 seconds ---
