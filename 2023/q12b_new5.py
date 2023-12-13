@@ -1,6 +1,7 @@
 # Using readlines()
 import math
 import time
+from functools import cache
 
 file1 = open('q12a.txt', 'r')
 lines = file1.readlines()
@@ -13,7 +14,13 @@ max_spring_length = -math.inf
 springs = []
 for line in lines:
     unknown, known = list(line.rstrip().split(" ")[0]), literal_eval("[" + line.rstrip().split(" ")[1] + "]")
+
+
+    unknown = list("?".join(["".join(unknown)]*5))
+    known = known * 5
+
     springs.append((unknown, known))
+
     max_spring_length = max(max_spring_length, max(known))
 
 
@@ -53,24 +60,19 @@ def create_constraints(unknown):
         for i in range(max_spring_length + 1):
             if (is_legal(pos, i, unknown)):
                 constraint.append(i)
-        constraints.append(constraint)
+        constraints.append(tuple(constraint))
 
     return constraints
 
 
 
-total = 0
-
-legal_arrangements = 0
-def count_legal_arrangements(constraints, known, depth):
-    global legal_arrangements
-    if depth == len(constraints): # at end
+# changed to returning the count instead of updating globals + used tuples and removed depth for caching
+@cache
+def count_legal_arrangements(remaining_constraints, known):
+    if len(remaining_constraints) == 0: # at end
         if len(known) == 0: # and everything used
-            legal_arrangements += 1
-        #     print(solution)
-        # else:
-        #     print("end reached without solution: ", solution)
-        return
+            return 1
+        return 0
 
     # use config, or use 0
     if len(known) > 0:
@@ -78,29 +80,23 @@ def count_legal_arrangements(constraints, known, depth):
     else:
         options = [0]
 
+    legal_arrangements = 0
     for option in options:
         # print(f"try {option} at depth {depth}")
         # print(">>>", depth, constraints)
-        if option in constraints[depth]: # TODO + 1
-            count_legal_arrangements(constraints, known if option == 0 else known[1:], min(len(constraints), depth + option + 1))
+        if option in remaining_constraints[0]: # TODO + 1
+            legal_arrangements += count_legal_arrangements(remaining_constraints[option + 1:], known if option == 0 else known[1:])
+
+    return legal_arrangements
 
 
+total = 0
 
-
-
-print("Part 1", total)
-# print("max spring", max_spring_length)
-
-constraints = create_constraints(list(['?', '?', '.', '?']))
-# print(constraints)
-count_legal_arrangements(constraints, [1, 1], 0)
-print(legal_arrangements)
 
 for unknown, known in springs:
     legal_arrangements = 0
     constraints = create_constraints(unknown)
-    count_legal_arrangements(constraints, known, 0)
-    total += legal_arrangements
+    total += count_legal_arrangements(tuple(constraints), tuple(known))
 
 
 print("Part 1", total)

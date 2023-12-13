@@ -13,8 +13,18 @@ max_spring_length = -math.inf
 springs = []
 for line in lines:
     unknown, known = list(line.rstrip().split(" ")[0]), literal_eval("[" + line.rstrip().split(" ")[1] + "]")
-    springs.append((unknown, known))
+
+    print(line)
+
     max_spring_length = max(max_spring_length, max(known))
+
+    unknown = list("?".join(["".join(unknown)]*5))
+    known = known * 5
+
+    print(unknown, known)
+
+
+    springs.append((unknown, known))
 
 
 start_time = time.time()
@@ -53,7 +63,7 @@ def create_constraints(unknown):
         for i in range(max_spring_length + 1):
             if (is_legal(pos, i, unknown)):
                 constraint.append(i)
-        constraints.append(constraint)
+        constraints.append(set(constraint))
 
     return constraints
 
@@ -62,7 +72,7 @@ def create_constraints(unknown):
 total = 0
 
 legal_arrangements = 0
-def count_legal_arrangements(constraints, known, depth):
+def count_legal_arrangements(constraints, known, depth, sum_known, sum_used):
     global legal_arrangements
     if depth == len(constraints): # at end
         if len(known) == 0: # and everything used
@@ -70,6 +80,10 @@ def count_legal_arrangements(constraints, known, depth):
         #     print(solution)
         # else:
         #     print("end reached without solution: ", solution)
+        return
+
+    # break early when not feasible
+    if sum_known - sum_used > len(constraints) - depth:
         return
 
     # use config, or use 0
@@ -82,26 +96,30 @@ def count_legal_arrangements(constraints, known, depth):
         # print(f"try {option} at depth {depth}")
         # print(">>>", depth, constraints)
         if option in constraints[depth]: # TODO + 1
-            count_legal_arrangements(constraints, known if option == 0 else known[1:], min(len(constraints), depth + option + 1))
-
-
-
+            count_legal_arrangements(constraints, known if option == 0 else known[1:], min(len(constraints), depth + option + 1), sum_known, sum_used + option)
 
 
 print("Part 1", total)
 # print("max spring", max_spring_length)
 
-constraints = create_constraints(list(['?', '?', '.', '?']))
-# print(constraints)
-count_legal_arrangements(constraints, [1, 1], 0)
-print(legal_arrangements)
+# constraints = create_constraints(list(['?', '?', '.', '?']))
+# # print(constraints)
+# count_legal_arrangements(constraints, [1, 1], 0, sum(known), 0)
+# print(legal_arrangements)
 
+i = 0
 for unknown, known in springs:
+    i += 1
+    print(i)
     legal_arrangements = 0
     constraints = create_constraints(unknown)
-    count_legal_arrangements(constraints, known, 0)
+    print(constraints)
+    print("".join(unknown))
+    print(known)
+    count_legal_arrangements(constraints, known, 0, sum(known), 0)
     total += legal_arrangements
 
+    print(">>> %s seconds and counting" % (time.time() - start_time))
 
 print("Part 1", total)
 
