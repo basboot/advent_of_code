@@ -78,7 +78,7 @@ class Monkey:
 
                 self.ready = True
 
-                # print("Ready: ", self.name, self.value)
+                print("Ready: ", self.name, self.value)
                 if self.name == "root":
                     print("ROOT: ", self.value)
 
