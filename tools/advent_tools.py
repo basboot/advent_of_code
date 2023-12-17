@@ -20,17 +20,24 @@ def next_pos(current_pos, direction, width, height):
     di, dj = DIRECTIONS[direction]
     next_i, next_j = i + di, j + dj
 
-    if 0 <= next_i < height and 0 <= next_j < width:
+    if is_valid_pos((next_i, next_j), width, height):
         return (next_i, next_j), True
     else:
         return (i, j), False
 
-def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, data_conversions=None):
+def is_valid_pos(pos, width, height):
+    i, j = pos
+    return 0 <= i < height and 0 <= j < width
+
+def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int_conversion=True):
 
     if grid_type == GRID_DICT:
         grid = {}
     else:
-        assert True, "Not implemented"
+        if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
+            grid = []
+        else:
+            assert True, "Not implemented"
 
     width = -math.inf
     height = -math.inf
@@ -41,13 +48,38 @@ def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, dat
 
         height = max(height, i)
 
+        if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
+            grid_row = []
+
         for j in range(len(row)):
 
             width = max(width, j)
 
+            value = row[j]
+
+            if value_conversions is not None:
+                assert value in value_conversions, f"Value missing in conversion {value}"
+                value = value_conversions[value]
+
+            if int_conversion:
+                value = int(value)
+
             if grid_type == GRID_DICT:
-                grid[(i, j)] = row[j]
+                grid[(i, j)] = value
             else:
-                assert True, "Not implemented"
+                if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
+                    grid_row.append(value)
+                else:
+                    assert True, "Not implemented"
+
+        if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
+            grid.append(grid_row)
+
+    if grid_type == GRID_NUMPY:
+        grid = np.array(grid)
+
+    if grid_type == GRID_LIST:
+        if len(grid) == 1:
+            grid = grid[0]
 
     return grid, width + 1, height + 1
