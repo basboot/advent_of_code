@@ -29,7 +29,7 @@ def is_valid_pos(pos, width, height):
     i, j = pos
     return 0 <= i < height and 0 <= j < width
 
-def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int_conversion=True):
+def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int_conversion=False):
 
     if grid_type == GRID_DICT:
         grid = {}
