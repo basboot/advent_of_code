@@ -15,12 +15,12 @@ DIRECTIONS = {
 
 
 # return (next_pos), move_possible
-def next_pos(current_pos, direction, width, height):
+def next_pos(current_pos, direction, width=None, height=None):
     i, j = current_pos
     di, dj = DIRECTIONS[direction]
     next_i, next_j = i + di, j + dj
 
-    if is_valid_pos((next_i, next_j), width, height):
+    if width is None or is_valid_pos((next_i, next_j), width, height):
         return (next_i, next_j), True
     else:
         return (i, j), False
@@ -60,6 +60,8 @@ def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int
             if value_conversions is not None:
                 assert value in value_conversions, f"Value missing in conversion {value}"
                 value = value_conversions[value]
+                if value is None: # skip None values (only makes sense dict)
+                    continue
 
             if int_conversion:
                 value = int(value)
