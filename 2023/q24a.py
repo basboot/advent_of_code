@@ -101,15 +101,6 @@ print("Total", total)
 
 # 4108 too low
 
-# print(stones)
-
-# pos1, vel1 = stones[0,0:2], stones[0,3:5]
-# pos2, vel2 = stones[1:,0:2], stones[1:,3:5]
-# print("1", pos1, vel1)
-# print("2", pos2, vel2)
-# print (paths_intersect(pos1, vel1, pos2, vel2))
-
-# TODO: how to detect paths crossed in the past for hailstone A
 
 
 
