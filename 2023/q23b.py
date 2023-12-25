@@ -64,7 +64,7 @@ for tile in map:
 
 
 
-# cut network in pieces
+# cut network in pieces (not used anymore)
 def cut_network(G, start, goal):
     if start == goal: # no edges left between
         return [start]
@@ -83,7 +83,6 @@ def cut_network(G, start, goal):
     return cut_network(G, start, firs_part) + cut_network(G, last_part, goal)
 
 # cuts = cut_network(G, start, goal)
-
 
 # longest path problem is NP-hard, so we need to brute force
 
@@ -146,7 +145,6 @@ total = 0
 # mincut approach not working, just use the initial start and goal
 cuts = [start, goal]
 
-print(len(cuts), "cuts")
 for i in range(len(cuts) - 1):
     print(f"{i + 1}. from {cuts[i]} to {cuts[i + 1]}")
     total += dfs(cuts[i], cuts[i + 1], (), 0) + 1
