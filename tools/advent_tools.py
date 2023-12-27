@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-GRID_LIST, GRID_NUMPY, GRID_DICT = 0, 1, 2
+GRID_LIST, GRID_NUMPY, GRID_DICT, GRID_SET = 0, 1, 2, 3
 
 NORTH, EAST, SOUTH, WEST = 0, 1, 2, 3
 
@@ -31,8 +31,11 @@ def is_valid_pos(pos, width, height):
 
 def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int_conversion=False):
 
-    if grid_type == GRID_DICT:
-        grid = {}
+    if grid_type == GRID_DICT or grid_type == GRID_SET:
+        if grid_type == GRID_DICT:
+            grid = {}
+        else:
+            grid = set()
     else:
         if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
             grid = []
@@ -66,8 +69,11 @@ def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int
             if int_conversion:
                 value = int(value)
 
-            if grid_type == GRID_DICT:
-                grid[(i, j)] = value
+            if grid_type == GRID_DICT or grid_type == GRID_SET:
+                if grid_type == GRID_DICT:
+                    grid[(i, j)] = value
+                else:
+                    grid.add((i, j))
             else:
                 if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
                     grid_row.append(value)
