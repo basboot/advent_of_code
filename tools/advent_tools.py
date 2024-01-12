@@ -91,3 +91,44 @@ def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int
             grid = grid[0]
 
     return grid, width + 1, height + 1
+
+# section = (x_start, x_end)
+def find_overlap(section1, section2):
+    if section1[0] < section2[0]:
+        start_section = section1
+        end_section = section2
+    else:
+        start_section = section2
+        end_section = section1
+
+    if start_section[0] < end_section[0]:
+        part1 = [start_section[0], min(start_section[1], end_section[0])]
+    else:
+        part1 = None
+
+    if start_section[0] < end_section[1] and start_section[1] > end_section[0]:
+        part2 = [max(start_section[0], end_section[0]), min(start_section[1], end_section[1])]
+    else:
+        part2 = None
+
+    if start_section[1] != end_section[1]:
+        if part2 is None: # no overlap, just return
+            part3 = [end_section[0], end_section[1]]
+        else:
+            part3 = [min(start_section[1], end_section[1]), max(start_section[1], end_section[1])]
+    else:
+        part3 = None
+
+    return part1, part2, part3
+
+
+if __name__ == '__main__':
+    print(find_overlap([1, 4], [2, 5]))
+    print(find_overlap([4, 5], [1, 10]))
+    print(find_overlap([1, 2], [10, 11]))
+    print(find_overlap([5, 10], [2, 7]))
+    print(find_overlap([3, 5], [1, 12]))
+    print(find_overlap([4, 8], [4, 8]))
+    print(find_overlap([1, 8], [4, 8]))
+    print(find_overlap([4, 8], [4, 12]))
+
