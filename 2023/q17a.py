@@ -9,7 +9,7 @@ from tools.advent_tools import *
 
 sys.setrecursionlimit(10000)
 
-file1 = open('q17a.txt', 'r')
+file1 = open('q15a.txt', 'r')
 lines = file1.readlines()
 
 city, width, height = read_grid(lines, GRID_NUMPY, lambda a: a.strip(), value_conversions=None, int_conversion=True)
