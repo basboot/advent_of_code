@@ -73,7 +73,8 @@ def read_grid(input, grid_type, f_prepare_line=None, value_conversions=None, int
                 if grid_type == GRID_DICT:
                     grid[(i, j)] = value
                 else:
-                    grid.add((i, j))
+                    if value:
+                        grid.add((i, j))
             else:
                 if grid_type == GRID_NUMPY or grid_type == GRID_LIST:
                     grid_row.append(value)
