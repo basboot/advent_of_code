@@ -6,12 +6,14 @@ from itertools import product
 from sympy import Symbol, solve
 import numpy as np
 
-file1 = open('q23a.txt', 'r')
+from tools import stopwatch
+
+file1 = open('q23c.txt', 'r')
 file_lines = file1.readlines()
 
 amphipods = []
 
-HALLWAY_SIZE = 2
+HALLWAY_SIZE = 4
 
 SETTINGS = {
     1: [2, 1],
@@ -28,22 +30,38 @@ GOAL = BURROW + 11 # don't need al, but will make calculations easier I hope
 
 initial_state = [0] * (4 * HALLWAY_SIZE + 11 + 4 * HALLWAY_SIZE)
 
-for i in range(2):
+for i in range(HALLWAY_SIZE):
     situation = file_lines[2 + i].rstrip()
     for pos in range(len(situation)):
         if situation[pos] in ['A', 'B', 'C', 'D']:
-            amphipods.append((ord(situation[pos]) - ord('A') + 1, 1 - i, pos - 1)) # 0 is bottom, pos is up
-            initial_state[(pos - 3) + (1 - i)] = ord(situation[pos]) - ord('A') + 1
+            amphipods.append((ord(situation[pos]) - ord('A') + 1, i, pos - 1)) # 0 is bottom, pos is up
+
+# create initial state from amphipods
+for amphipod in amphipods:
+    at, ai, aj = amphipod
+    initial_state[(aj // 2 - 1) * HALLWAY_SIZE + (HALLWAY_SIZE - ai - 1)] = at
+
 
 print(amphipods)
 
 initial_state = tuple(initial_state)
 
-goal_state = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4)
+# initial_state = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4)
+
+goal_state = [0] * (HALLWAY_SIZE * 4 * 2 + 11)
+
+for i in range(4):
+    for h in range(HALLWAY_SIZE):
+        goal_state[BURROW + 11 + HALLWAY_SIZE * i + h] = i + 1
+goal_state = tuple(goal_state)
+
+print(goal_state)
+
 
 print(initial_state)
 
 print("----------")
+
 
 # move initial amphipods to end state if they are already in place
 
@@ -95,23 +113,6 @@ def get_reachable_places(pos, state):
 def get_next_states(state):
     states = []
 
-    # from initial state to burrow
-    for i in range(4 * HALLWAY_SIZE):
-        amphipod_type = state[i]
-        if amphipod_type == 0: # empty
-            continue
-        steps = 0
-        if i % HALLWAY_SIZE == 0: # has to travel extra step(s) (and must have free space above)
-            if state[i + 1] > 0: # TODO: check all above
-                continue
-            else:
-                steps += 1 # TODO: add full hallway
-        for new_index, extra_steps in get_reachable_places((i // HALLWAY_SIZE) * HALLWAY_SIZE + 2, state):
-            new_state = list(state) # copy and make mutable
-            new_state[new_index] = new_state[i]
-            new_state[i] = 0
-            states.append((tuple(new_state), (steps + extra_steps) * SETTINGS[amphipod_type][ENERGY]))
-
     # from burrow to destination
     for i in range(11):
         amphipod_type = state[BURROW + i]
@@ -129,7 +130,7 @@ def get_next_states(state):
         if from_pos > to_pos:
             from_pos, to_pos = to_pos, from_pos
 
-        if sum(state[from_pos:to_pos + 1]) > amphipod_type: # obstruction because there must be someone else in the way
+        if sum(state[from_pos:to_pos + 1]) > amphipod_type:  # obstruction because there must be someone else in the way
             continue
 
         steps = to_pos - from_pos
@@ -142,11 +143,88 @@ def get_next_states(state):
                 new_state[i + BURROW] = 0
                 states.append((tuple(new_state), (steps + HALLWAY_SIZE - h) * SETTINGS[amphipod_type][ENERGY]))
 
+                break
+
+    # if it is possible to go home, do not move other pieces
+    if len(states) == 0:
+        # from initial state to burrow
+        for i in range(4):
+            for h in range(HALLWAY_SIZE):
+                amphipod = state[i * HALLWAY_SIZE + h]
+                if amphipod == 0: # empty
+                    continue
+                steps = 0
+
+                if sum(state[i * HALLWAY_SIZE + h: (i+1) * HALLWAY_SIZE]) > amphipod: # is someone in the way?
+                    continue
+                else:
+                    steps += (HALLWAY_SIZE - h)
+                for new_index, extra_steps in get_reachable_places(i * 2 + 2, state):
+                    new_state = list(state) # copy and make mutable
+                    new_state[new_index] = new_state[i * HALLWAY_SIZE + h]
+                    new_state[i * HALLWAY_SIZE + h] = 0
+                    # get_reachable returns one too many
+                    states.append((tuple(new_state), (steps + extra_steps - 1) * SETTINGS[amphipod][ENERGY]))
+
     return states
 
 
+# TODO: create memoised helper functions to calc heuristic
+
+@cache
+def heuristic_initial(partial_state):
+    estimated_cost = 0
+    # cost to get to burrow (and above destination)
+    for i in range(4):
+        for h in range(HALLWAY_SIZE):
+            amphipod = partial_state[i * HALLWAY_SIZE + h]
+            if amphipod == 0:
+                continue
+            estimated_cost += SETTINGS[amphipod][ENERGY] * (HALLWAY_SIZE - h)
+
+            # burrow
+            to_pos = (amphipod - 1) * 2 + 2
+            estimated_cost += abs((i * 2 + 2) - to_pos) * SETTINGS[amphipod][ENERGY]
+
+    return estimated_cost
+
+@cache
+def heuristic_burrow(partial_state):
+    estimated_cost = 0
+
+    # cost to get above destination (already in burrow)
+    for i in range(11):
+        amphipod = partial_state[i]
+        if amphipod == 0:
+            continue
+        to_pos = (amphipod - 1) * 2 + 2
+        estimated_cost += abs(i - to_pos) * SETTINGS[amphipod][ENERGY]
+
+    return estimated_cost
+
+@cache
+def heuristic_end(partial_state):
+    estimated_cost = 0
+
+    # cost to get inside destination (everyine who is not home yet)
+    for i in range(4):
+        for h in range(HALLWAY_SIZE):
+            amphipod = partial_state[i * HALLWAY_SIZE + h]
+            if amphipod > 0:
+                continue
+            estimated_cost += SETTINGS[i + 1][ENERGY] * (HALLWAY_SIZE - h)
+
+    return estimated_cost
+
 def heuristic(state):
-    return 0
+    estimated_cost = heuristic_initial(state[0:BURROW])
+
+    estimated_cost += heuristic_burrow(state[BURROW: BURROW + 11])
+
+    estimated_cost += heuristic_end(state[BURROW + 11:])
+
+
+    return estimated_cost
 def a_star(start, goal):
     explored = set()
     to_explore = [] # heapq (estimated_cost, cost_so_far, pos, direction, n_straight)
@@ -157,22 +235,19 @@ def a_star(start, goal):
     while len(to_explore) > 0:
         estimated_cost, cost_so_far, state = heapq.heappop(to_explore)
 
-        print(estimated_cost)
+        # print(estimated_cost)
 
         if state in explored:
             continue
         explored.add(state)
-        print(state)
+        # print(state)
         if state == goal:
             print("FOUND")
             return cost_so_far
 
-        if state == (1, 0, 4, 0, 3, 2, 1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0):
-            print("reached strange state")
-
         actions = get_next_states(state)
         for next_state, next_cost in actions:
-            print("NEXT:", next_state)
+            # print("NEXT:", next_state)
             if next_state in explored: # don't explore again
                 continue
 
@@ -183,9 +258,13 @@ def a_star(start, goal):
     return "Not found"
 
 
-# print(">>", a_star(initial_state, goal_state))
+stopwatch.start("astar")
+print(">>", a_star(initial_state, goal_state))
+stopwatch.stop("astar")
+stopwatch.show()
 
-for state in get_next_states(initial_state):
-    print(state)
+# for state in get_next_states(initial_state):
+#     print(state)
 
 
+# 44169 too low
