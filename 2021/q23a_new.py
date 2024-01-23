@@ -11,6 +11,8 @@ file_lines = file1.readlines()
 
 amphipods = []
 
+HALLWAY_SIZE = 2
+
 SETTINGS = {
     1: [2, 1],
     2: [4, 10],
@@ -21,10 +23,10 @@ SETTINGS = {
 DESTINATION, ENERGY = 0, 1
 
 INITIAL = 0
-BURROW = INITIAL + 4 * 2
+BURROW = INITIAL + 4 * HALLWAY_SIZE
 GOAL = BURROW + 11 # don't need al, but will make calculations easier I hope
 
-initial_state = [0] * (8 + 11 + 8)
+initial_state = [0] * (4 * HALLWAY_SIZE + 11 + 4 * HALLWAY_SIZE)
 
 for i in range(2):
     situation = file_lines[2 + i].rstrip()
@@ -39,40 +41,28 @@ initial_state = tuple(initial_state)
 
 goal_state = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4)
 
-# initial_state = (1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 3, 3, 4, 4)
-
-# initial_state = (1, 2, 4, 3, 3, 0, 1, 4, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 print(initial_state)
 
 print("----------")
-
-# exit()
 
 # move initial amphipods to end state if they are already in place
 
 new_initial_state = list(initial_state)
 
-for i in range(0, 8, 2):
-    amphipod2 = initial_state[i + 0]
-    amphipod1 = initial_state[i + 1]
+# TODO: fix hallway size
+for i in range(0, 4):
+    for h in range(HALLWAY_SIZE):
+        amphipod = initial_state[i * HALLWAY_SIZE + h]
 
-    desired = (i // 2) + 1
-
-    if amphipod1 == amphipod2 and amphipod1 == desired:
-        # move
-        new_initial_state[i + BURROW + 11 + 1] = amphipod1
-        new_initial_state[i + 1] = 0
-
-    if amphipod2 == desired:
-        new_initial_state[i + BURROW + 11 + 0] = amphipod2
-        new_initial_state[i + 0] = 0
-
+        if amphipod == (i + 1): # correct amphipod => move
+            new_initial_state[BURROW + 11 + (i * HALLWAY_SIZE + h)] = amphipod
+            new_initial_state[i * HALLWAY_SIZE + h] = 0
+        else:
+            break # not correct, break to next hallway, because everyone above must leave to make room
 
 initial_state = tuple(new_initial_state)
 
 print(initial_state)
-
-
 
 UNREACHABLE = {2, 4, 6, 8}
 
@@ -106,17 +96,17 @@ def get_next_states(state):
     states = []
 
     # from initial state to burrow
-    for i in range(8):
+    for i in range(4 * HALLWAY_SIZE):
         amphipod_type = state[i]
         if amphipod_type == 0: # empty
             continue
         steps = 0
-        if i % 2 == 0: # has to travel extra step (and must have free space above)
-            if state[i + 1] > 0:
+        if i % HALLWAY_SIZE == 0: # has to travel extra step(s) (and must have free space above)
+            if state[i + 1] > 0: # TODO: check all above
                 continue
             else:
-                steps += 1
-        for new_index, extra_steps in get_reachable_places((i // 2) * 2 + 2, state):
+                steps += 1 # TODO: add full hallway
+        for new_index, extra_steps in get_reachable_places((i // HALLWAY_SIZE) * HALLWAY_SIZE + 2, state):
             new_state = list(state) # copy and make mutable
             new_state[new_index] = new_state[i]
             new_state[i] = 0
@@ -128,9 +118,8 @@ def get_next_states(state):
         if amphipod_type == 0:  # empty
             continue
 
-        # TODO: check
-        # everyone needs to have left before going to the goal
-        if state[2 * (amphipod_type - 1)] > 0 or state[2 * (amphipod_type - 1) + 1] > 0:
+        # everyone needs to have left initial state before going to the goal
+        if sum(state[HALLWAY_SIZE * (amphipod_type - 1): HALLWAY_SIZE * (amphipod_type - 1) + HALLWAY_SIZE]) > 0:
             continue
 
         # path free? # TODO: faster to put after goal empty?
@@ -140,25 +129,18 @@ def get_next_states(state):
         if from_pos > to_pos:
             from_pos, to_pos = to_pos, from_pos
 
-        # TODO: this is wrong when reversed
         if sum(state[from_pos:to_pos + 1]) > amphipod_type: # obstruction because there must be someone else in the way
             continue
 
         steps = to_pos - from_pos
 
-        # both empty? go to last
-        if state[GOAL + 2 * (amphipod_type - 1)] == 0 and state[GOAL + 2 * (amphipod_type - 1) + 1] == 0:
-            new_state = list(state) # copy and make mutable
-            new_state[GOAL + 2 * (amphipod_type - 1)] = new_state[i + BURROW]
-            new_state[i + BURROW] = 0
-            states.append((tuple(new_state), (steps + 2) * SETTINGS[amphipod_type][ENERGY]))
-        else:
-            # second empty, and first has same amphipond? go to second
-            if state[GOAL + 2 * (amphipod_type - 1)] == amphipod_type and state[GOAL + 2 * (amphipod_type - 1) + 1] == 0:
+        # put amphipod at first free position
+        for h in range(HALLWAY_SIZE):
+            if state[GOAL + HALLWAY_SIZE * (amphipod_type - 1) + h] == 0:
                 new_state = list(state)  # copy and make mutable
-                new_state[GOAL + 2 * (amphipod_type - 1) + 1] = new_state[i + BURROW]
+                new_state[GOAL + HALLWAY_SIZE * (amphipod_type - 1) + h] = new_state[i + BURROW]
                 new_state[i + BURROW] = 0
-                states.append((tuple(new_state), (steps + 1) * SETTINGS[amphipod_type][ENERGY]))
+                states.append((tuple(new_state), (steps + HALLWAY_SIZE - h) * SETTINGS[amphipod_type][ENERGY]))
 
     return states
 
@@ -202,14 +184,5 @@ def a_star(start, goal):
 
 
 print(">>", a_star(initial_state, goal_state))
-#
-# for state, cost in get_next_states(initial_state):
-#     print(state[0:8], state[8:8+11], state[8+11:], cost, state)
-
-
-# NEXT: (1, 0, 4, 0, 3, 0, 1, 0, 4, 0, 0, 0, 0, 0, 0, 2, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0)
-# NEXT: (1, 0, 4, 0, 3, 0, 1, 0, 4, 0, 0, 0, 0, 2, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0)
-# NEXT: (1, 0, 4, 0, 3, 0, 1, 0, 4, 0, 0, 2, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0)
-# NEXT: (1, 0, 4, 0, 3, 0, 1, 0, 4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0)
 
 
