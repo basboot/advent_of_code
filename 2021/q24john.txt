@@ -1,0 +1,18 @@
+inp w INP
+mul x 0 x=0 reset
+add x z oude z naar x
+mod x 26 x = x%26
+div z 26 oude z delen door 1 of 26  bij mij
+add x -11 verlagen met 11, x is nu oude z % 26 -11, die -11 is steeds anders
+eql x w x=1 als deze waarde = INP anders 0
+eql x 0 not x
+mul y 0 y=0 reset
+add y 25 y=25, dit wisselt steeds
+mul y x y wordt 0 of 25 afhankelijk van uitslag equ w x
+add y 1 y=y+1 1 of 26 dus
+mul z y z blijft z of 26z
+mul y 0 y=0 reset
+add y w INP naar y
+add y 2 INP+2
+mul y x y blijft zichzelf of wordt 0
+add z y verhoog z met y
