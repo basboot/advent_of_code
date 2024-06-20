@@ -57,7 +57,7 @@ def block26(z, w, param1, param2):
 
 
 DIGITS = [9, 8, 7, 6, 5, 4, 3, 2, 1]
-DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 @cache
 def dfs(z, level):

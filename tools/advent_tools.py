@@ -15,10 +15,10 @@ DIRECTIONS = {
 
 
 # return (next_pos), move_possible
-def next_pos(current_pos, direction, width=None, height=None):
+def next_pos(current_pos, direction, width=None, height=None, steps=1):
     i, j = current_pos
     di, dj = DIRECTIONS[direction]
-    next_i, next_j = i + di, j + dj
+    next_i, next_j = i + di * steps, j + dj * steps
 
     if width is None or is_valid_pos((next_i, next_j), width, height):
         return (next_i, next_j), True
