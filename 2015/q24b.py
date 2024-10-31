@@ -1,0 +1,73 @@
+import collections
+import itertools
+from collections import defaultdict
+from math import prod
+from random import random, shuffle
+
+import numpy as np
+from mip import maximize
+from numpy.core.defchararray import isnumeric
+from mip import *
+import re
+
+from sklearn.inspection import partial_dependence
+
+file1 = open('q24a.txt', 'r')
+lines = file1.readlines()
+
+packets = []
+for line in lines:
+    packets.append(int(line.rstrip()))
+
+packets.sort(reverse=True)
+print(packets)
+
+total_weight = sum(packets)
+n_packets = len(packets)
+assert total_weight % 4 == 0, "Total weight must be a multiple of 4"
+target_weight = total_weight // 4
+
+print("target", target_weight)
+
+def get_next_packet(selected: int, current_packet: int, max_weight: int):
+    while current_packet < n_packets:
+        # not selected yet, and fits
+        if (1 << current_packet & selected) == 0 and packets[current_packet] <= max_weight:
+            yield current_packet
+        current_packet += 1
+
+best_n = n_packets
+
+def get_packets(selected: int, current_packet: int, remaining_weight: int, n: int, first=False):
+    global best_n
+
+    if first and n > best_n:
+        pass # break early if we cannot do better
+    else:
+        if remaining_weight == 0:
+            if first:
+                best_n = min(best_n, n)
+            yield selected, n
+        else:
+            for selected_packet in get_next_packet(selected, current_packet, remaining_weight):
+                yield from get_packets(selected | 1 << selected_packet, selected_packet + 1, remaining_weight - packets[selected_packet], n + 1, first)
+
+results = []
+
+for selected1, n1 in get_packets(0, 0, target_weight, 0, True):
+    for selected2, n2 in get_packets(selected1, 0, target_weight, 0):
+        for selected3, n3 in get_packets(selected2, 0, target_weight, 0):
+            for selected4, n4 in get_packets(selected3, 0, target_weight, 0):
+                # analyse section 1
+                q = 1
+                for i in range(n_packets):
+                    if selected1 & 1 << i:
+                        q *= packets[i]
+                results.append((n1, q))
+                break
+            break # only interested in first
+        break
+
+results.sort()
+print("Part 2", results[0])
+
