@@ -1,0 +1,30 @@
+cpy a d -- d = a
+cpy 4 c -- c = 4
+cpy 643 b -- b = 643
+inc d -- d++
+dec b -- b--
+jnz b -2 -- naar 4 zolang b > 0
+dec c -- c--
+jnz c -5 -- naar 3 zolang c > 0, d = b * c, b = 0, c = 0
+cpy d a -- a = d # input + 4 * 643
+jnz 0 0 -- nop
+cpy a b -- b = a
+cpy 0 a -- a = 0
+cpy 2 c -- c = 2
+jnz b 2 -- naar 16 als b > 0
+jnz 1 6 -- naar 21
+dec b -- b--
+dec c -- c--
+jnz c -4 -- naar 14 zolang c > 0
+inc a -- a++
+jnz 1 -7 -- naar 13
+cpy 2 b -- b = 2
+jnz c 2 -- naar 24 als c > 0
+jnz 1 4 -- naar 27
+dec b -- b--
+dec c -- c--
+jnz 1 -4 -- naar 22
+jnz 0 0 -- nop
+out b -- output b
+jnz a -19 -- naar 10 als a > 0
+jnz 1 -21 -- naar 9

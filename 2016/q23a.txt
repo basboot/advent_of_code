@@ -1,0 +1,26 @@
+cpy a b -- b = a 12   -------- LET OP: in echt regelnummers - 1
+dec b -- b-- 11
+cpy a d -- d = a = 12
+cpy 0 a -- a = 0
+cpy b c -- c = b = 11
+inc a -- a++
+dec c -- c--
+jnz c -2 -- naar 6 als c > 0 -> c = 0, a = c
+dec d -- d--
+jnz d -5 -- naar 5 als d > 0 --> vanaf 5 t/m 10, a = b * d, d = 0, c = 0
+dec b -- b--
+cpy b c -- c = b
+cpy c d -- d = c
+dec d -- d++
+inc c -- c++
+jnz d -2 -- naar 14 als d > 0
+tgl c -- TOGGLE C
+cpy -16 c -- c = -16
+jnz 1 c -- naar 3
+cpy 86 c -- c = 86
+jnz 77 d -- naar 21? (d is 0)
+inc a -- a++
+inc d -- d++
+jnz d -2 -- naar 22 als d > 0
+inc c -- c++
+jnz c -5 -- naar 21 als c > 0
