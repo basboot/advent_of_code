@@ -1,7 +1,3 @@
-import math
-
-import numpy as np
-
 file1 = open('q8a.txt', 'r')
 file_lines = file1.readlines()
 

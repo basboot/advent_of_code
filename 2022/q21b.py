@@ -1,12 +1,9 @@
 # Using readlines()
-import math
 
 from sympy import symbols
 
 file1 = open('q21a.txt', 'r')
 lines = file1.readlines()
-
-import sympy
 
 x = symbols('x')
 

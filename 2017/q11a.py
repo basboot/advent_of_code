@@ -1,10 +1,6 @@
 import math
-from collections import Counter
 
 import numpy as np
-
-import networkx as nx
-from collections import defaultdict
 
 file1 = open('q11a.txt', 'r')
 path = file1.readlines()[0].rstrip().split(",")

@@ -7,8 +7,6 @@ lines = file1.readlines()
 import numpy as np
 from scipy.interpolate import lagrange
 
-from scipy import interpolate
-
 total = 0
 for line in lines:
     y = np.array([int(y) for y in line.rstrip().split(" ")])

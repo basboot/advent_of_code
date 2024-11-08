@@ -1,6 +1,5 @@
 # Using readlines()
 import queue
-import sys
 
 from tools.advent_tools import *
 

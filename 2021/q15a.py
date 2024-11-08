@@ -3,8 +3,6 @@ import heapq
 import sys
 import time
 
-from scipy.spatial.distance import cityblock
-
 from tools.advent_tools import *
 
 sys.setrecursionlimit(10000)

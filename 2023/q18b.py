@@ -1,7 +1,4 @@
 # Using readlines()
-import math
-import queue
-import sys
 
 from tools.advent_tools import *
 

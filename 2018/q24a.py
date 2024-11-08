@@ -1,11 +1,4 @@
-import math
-import sys
 from dataclasses import dataclass
-
-import numpy as np
-from executing import cache
-from fontTools.misc.cython import returns
-from scipy.spatial.distance import cityblock
 
 file1 = open('q24a.txt', 'r')
 lines = file1.readlines()

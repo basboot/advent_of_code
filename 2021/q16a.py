@@ -1,6 +1,5 @@
-import math
-from functools import reduce
 import operator
+from functools import reduce
 
 reduce(operator.mul, (3, 4, 5), 1)
 

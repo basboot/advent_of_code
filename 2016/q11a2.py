@@ -1,5 +1,4 @@
 import heapq
-import sys
 from copy import copy
 from functools import total_ordering
 from itertools import combinations

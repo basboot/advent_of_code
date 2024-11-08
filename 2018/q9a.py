@@ -1,7 +1,4 @@
-import math
-from collections import Counter, deque
-import numpy as np
-from scipy.signal import convolve2d
+from collections import deque
 
 N_PLAYERS = 438 # notice we start at player 0, not 1
 LAST_MARBLE = 71626 * 100

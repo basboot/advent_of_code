@@ -1,8 +1,4 @@
-import math
 from itertools import product
-
-from sympy import Symbol, solve
-import numpy as np
 
 file1 = open('q22a.txt', 'r')
 file_lines = file1.readlines()

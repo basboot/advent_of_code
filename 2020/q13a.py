@@ -1,5 +1,3 @@
-from tools.advent_tools import *
-
 file1 = open('q13a.txt', 'r')
 lines = file1.readlines()
 

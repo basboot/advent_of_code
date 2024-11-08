@@ -3,6 +3,7 @@ file1 = open('q22a.txt', 'r')
 lines = file1.readlines()
 
 import re
+
 import numpy as np
 
 VOID, OPEN, WALL = 0, 1, 2

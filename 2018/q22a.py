@@ -1,11 +1,7 @@
-import sys
-
 import networkx as nx
 import numpy as np
 from executing import cache
-from fontTools.misc.cython import returns
-from networkx.algorithms.shortest_paths.weighted import dijkstra_path, dijkstra_path_length, \
-    single_source_dijkstra_path, single_source_dijkstra
+from networkx.algorithms.shortest_paths.weighted import single_source_dijkstra
 
 depth = 6969
 target = (9, 796)

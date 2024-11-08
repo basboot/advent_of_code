@@ -1,7 +1,7 @@
 # Using readlines()
-import collections
 import math
 from copy import deepcopy
+
 import numpy as np
 
 file1 = open('q16a.txt', 'r')

@@ -1,8 +1,3 @@
-import sys
-
-from executing import cache
-from fontTools.misc.cython import returns
-from pycparser.ply.yacc import restart
 from scipy.spatial.distance import cityblock
 
 file1 = open('q25a.txt', 'r')

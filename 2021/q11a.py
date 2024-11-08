@@ -1,5 +1,3 @@
-import numpy as np
-
 from tools.advent_tools import *
 
 file1 = open('q11a.txt', 'r')

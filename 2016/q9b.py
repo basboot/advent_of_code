@@ -1,8 +1,3 @@
-from collections import Counter
-from PIL import Image
-
-import numpy as np
-
 file1 = open('q9a.txt', 'r')
 lines = file1.readlines()
 

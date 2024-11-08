@@ -1,5 +1,3 @@
-import numpy as np
-
 file1 = open('q22a.txt', 'r')
 lines = file1.readlines()
 

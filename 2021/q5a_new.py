@@ -1,4 +1,5 @@
 import math
+
 import numpy as np
 
 file1 = open('q5a.txt', 'r')

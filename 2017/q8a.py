@@ -1,8 +1,3 @@
-from collections import Counter
-
-import numpy as np
-
-import networkx as nx
 from collections import defaultdict
 
 file1 = open('q8a.txt', 'r')

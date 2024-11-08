@@ -1,5 +1,4 @@
 # naive
-import functools
 
 elements = {
     "H": {"Sequence": "22", "Decays into": ["H"], "Abundance": 91790.383216},

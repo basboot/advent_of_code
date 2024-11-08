@@ -1,13 +1,4 @@
-import itertools
-from collections import defaultdict
-from random import random, shuffle
-
-import numpy as np
-from mip import maximize
-from numpy.core.defchararray import isnumeric
 from mip import *
-import re
-
 
 file1 = open('q19b.txt', 'r')
 lines = file1.readlines()

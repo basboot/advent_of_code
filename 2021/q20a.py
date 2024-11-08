@@ -1,6 +1,3 @@
-import math
-from itertools import combinations, permutations
-import numpy as np
 from tools.advent_tools import *
 
 file1 = open('q20a.txt', 'r')

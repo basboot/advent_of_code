@@ -1,8 +1,4 @@
 # Using readlines()
-import heapq
-import math
-
-from itertools import count
 
 file1 = open('q19a.txt', 'r')
 lines = file1.readlines()

@@ -1,5 +1,4 @@
 import math
-from itertools import combinations, permutations
 
 file1 = open('q17a.txt', 'r')
 file_lines = file1.readlines()

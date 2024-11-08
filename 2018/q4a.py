@@ -1,4 +1,3 @@
-from collections import Counter
 import numpy as np
 
 file1 = open('q4a.txt', 'r')

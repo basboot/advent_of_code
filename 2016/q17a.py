@@ -1,11 +1,6 @@
 import hashlib
 import math
-from collections import Counter, deque
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
+from collections import deque
 
 # grid 4x4, start at 0,0 target 0,3, cannot go outside grid, can walk only if passcode permits
 # grid changes during wals, so bfs is probably the best idea

@@ -1,11 +1,3 @@
-import math
-from collections import Counter
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
-
 file1 = open('q19a.txt', 'r')
 lines = file1.readlines()
 

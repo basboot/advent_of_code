@@ -1,5 +1,5 @@
-import math
-from itertools import combinations, permutations
+from itertools import combinations
+
 import numpy as np
 from scipy.spatial.distance import cityblock
 

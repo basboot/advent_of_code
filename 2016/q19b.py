@@ -1,14 +1,3 @@
-import hashlib
-import math
-from collections import Counter, deque
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
-
-
-
 n_elves = 3004953
 
 elves = [True] * n_elves # Zero indexed, so add one at the end!

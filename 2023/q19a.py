@@ -2,8 +2,8 @@
 file1 = open('q19a.txt', 'r')
 lines = file1.readlines()
 
-from ast import literal_eval
 import re
+from ast import literal_eval
 
 reading_work_flows = True
 parts = []

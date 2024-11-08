@@ -1,6 +1,4 @@
 import math
-from collections import Counter
-import numpy as np
 
 file1 = open('q6a.txt', 'r')
 

@@ -1,9 +1,6 @@
 import math
-import sys
 
 import numpy as np
-from executing import cache
-from fontTools.misc.cython import returns
 from scipy.spatial.distance import cityblock
 
 file1 = open('q23a.txt', 'r')

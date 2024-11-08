@@ -1,14 +1,3 @@
-import hashlib
-import math
-from collections import Counter, deque
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
-
-
-
 n_elves = 3004953
 
 # even aantal, de even worden verwijderd

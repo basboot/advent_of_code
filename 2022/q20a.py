@@ -2,8 +2,6 @@
 #  altijd klopt als je hem opvraagt via het value
 
 # Using readlines()
-import math
-from dataclasses import dataclass
 
 file1 = open('q20a.txt', 'r')
 lines = file1.readlines()

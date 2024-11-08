@@ -1,10 +1,4 @@
-from collections import Counter
 from functools import reduce
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
 
 file1 = open('q10a.txt', 'r')
 lengths = [ord(x) for x in file1.readlines()[0].rstrip()]

@@ -1,5 +1,4 @@
 # Using readlines()
-import math
 import random
 
 import numpy as np

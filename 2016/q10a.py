@@ -1,9 +1,4 @@
-from collections import Counter
-from PIL import Image
 from collections import defaultdict
-
-
-import numpy as np
 
 file1 = open('q10a.txt', 'r')
 lines = file1.readlines()

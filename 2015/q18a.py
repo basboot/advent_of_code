@@ -1,12 +1,3 @@
-import itertools
-from collections import defaultdict
-
-import numpy as np
-from mip import maximize
-from numpy.core.defchararray import isnumeric
-from mip import *
-
-
 file1 = open('q18a.txt', 'r')
 lines = file1.readlines()
 

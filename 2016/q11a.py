@@ -2,6 +2,7 @@ import sys
 from itertools import combinations
 
 from prettytable import PrettyTable
+
 table = PrettyTable()
 
 import aiger

@@ -1,11 +1,7 @@
-import functools
-
 from bitstring import BitArray
 
 file1 = open('q3a.txt', 'r')
 lines = file1.readlines()
-
-import numpy as np
 
 result = None
 

@@ -1,11 +1,7 @@
-import math
-from collections import Counter
 from functools import reduce
 
-import numpy as np
-
 import networkx as nx
-from collections import defaultdict
+
 
 # from day 10
 def knot_hash(input):

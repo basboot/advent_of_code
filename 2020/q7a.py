@@ -1,4 +1,4 @@
-from networkx import dfs_predecessors, bfs_predecessors, ancestors, bfs_edges
+from networkx import ancestors
 
 file1 = open('q7a.txt', 'r')
 lines = file1.readlines()

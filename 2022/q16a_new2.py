@@ -1,6 +1,4 @@
 # Using readlines()
-import collections
-import math
 
 file1 = open('q16a.txt', 'r')
 lines = file1.readlines()

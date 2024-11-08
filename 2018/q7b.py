@@ -1,7 +1,3 @@
-import math
-from collections import Counter
-import numpy as np
-
 file1 = open('q7a.txt', 'r')
 
 EXTRA_TIME = 60

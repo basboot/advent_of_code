@@ -1,7 +1,4 @@
-import math
-from collections import Counter
 import numpy as np
-from scipy.spatial.distance import cdist
 
 file1 = open('q6a.txt', 'r')
 

@@ -1,5 +1,3 @@
-from collections import Counter
-
 file1 = open('q10a.txt', 'r')
 lines = file1.readlines()
 

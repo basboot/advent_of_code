@@ -1,7 +1,6 @@
-from collections import Counter
 import hashlib
-from functools import cache
 import re
+from functools import cache
 
 salt = "qzyelonm"
 nonce = 0

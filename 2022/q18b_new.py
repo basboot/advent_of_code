@@ -1,10 +1,7 @@
 # Using readlines()
-import math
 import sys
 
 sys.setrecursionlimit(100000)
-
-from collections import deque
 
 file1 = open('q18a.txt', 'r')
 lines = file1.readlines()

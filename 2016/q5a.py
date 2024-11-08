@@ -1,4 +1,3 @@
-from collections import Counter
 import hashlib
 
 door_id = "ffykfhsq"

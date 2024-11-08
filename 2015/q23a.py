@@ -1,14 +1,3 @@
-import itertools
-from collections import defaultdict
-from random import random, shuffle
-
-import numpy as np
-from mip import maximize
-from numpy.core.defchararray import isnumeric
-from mip import *
-import re
-
-
 class Computer():
     def __init__(self, program: list):
         self.program_counter = 0

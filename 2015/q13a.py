@@ -1,9 +1,5 @@
 from itertools import permutations
 
-import numpy as np
-import matplotlib.pyplot as plt
-from networkx.algorithms.approximation.traveling_salesman import greedy_tsp
-
 file1 = open('q13a.txt', 'r')
 lines = file1.readlines()
 

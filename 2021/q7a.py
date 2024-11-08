@@ -5,9 +5,6 @@ import numpy as np
 file1 = open('q7a.txt', 'r')
 file_lines = file1.readlines()
 
-from sklearn.metrics import mean_absolute_error as mae
-
-
 crab_list = [int(x) for x in file_lines[0].rstrip().split(",")]
 
 crab_list.sort() # sort

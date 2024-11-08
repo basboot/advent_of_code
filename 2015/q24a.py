@@ -1,15 +1,5 @@
 import itertools
-from collections import defaultdict
 from math import prod
-from random import random, shuffle
-
-import numpy as np
-from mip import maximize
-from numpy.core.defchararray import isnumeric
-from mip import *
-import re
-
-from sklearn.inspection import partial_dependence
 
 file1 = open('q24a.txt', 'r')
 lines = file1.readlines()

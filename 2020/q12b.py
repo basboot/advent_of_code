@@ -1,6 +1,7 @@
+import math
+
 from tools.advent_tools import *
 
-import math
 
 # https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python
 def rotate(origin, point, angle):

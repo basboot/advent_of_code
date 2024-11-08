@@ -1,11 +1,3 @@
-from collections import defaultdict
-
-import numpy as np
-from mip import maximize
-from numpy.core.defchararray import isnumeric
-from mip import *
-
-
 evidence = {
 "children": 3,
 "cats": 7, # >

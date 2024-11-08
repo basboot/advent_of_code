@@ -1,8 +1,7 @@
-import math
 import sys
 from functools import cache
-from itertools import combinations, permutations, product
-import numpy as np
+from itertools import product
+
 from tools.advent_tools import *
 
 file1 = open('q21a.txt', 'r')

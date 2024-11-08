@@ -1,7 +1,6 @@
 # Using readlines()
 import sys
 import time
-from functools import cache
 
 from tools.advent_tools import *
 

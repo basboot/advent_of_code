@@ -1,4 +1,5 @@
 from ast import literal_eval
+
 from scipy.spatial.distance import cityblock
 
 # Using readlines()

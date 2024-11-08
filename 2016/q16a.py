@@ -1,6 +1,3 @@
-from collections import Counter
-import hashlib
-
 import numpy as np
 
 disk_size = 35651584 #272

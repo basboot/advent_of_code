@@ -1,8 +1,5 @@
 import sys
 
-from executing import cache
-from fontTools.misc.cython import returns
-
 sys.setrecursionlimit(10000)
 
 file1 = open('q20a.txt', 'r')

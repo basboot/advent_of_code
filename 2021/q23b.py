@@ -1,10 +1,5 @@
 import heapq
-import math
 from functools import cache
-from itertools import product
-
-from sympy import Symbol, solve
-import numpy as np
 
 from tools import stopwatch
 

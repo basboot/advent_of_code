@@ -1,10 +1,4 @@
-import math
-from collections import Counter, deque
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
+from collections import deque
 
 file1 = open('q21a.txt', 'r')
 

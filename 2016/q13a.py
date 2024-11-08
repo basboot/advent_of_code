@@ -1,6 +1,3 @@
-from collections import Counter
-import hashlib
-
 favorite_number = 1352
 
 from collections import deque

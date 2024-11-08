@@ -1,11 +1,3 @@
-import math
-from collections import Counter
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
-
 file1 = open('q16a.txt', 'r')
 
 instructions = [(x[0], int (x[1:]) if x[0] == 's' else [int(y) if x[0] == 'x' else y for y in x[1:].split("/")]) for x in file1.readlines()[0].rstrip().split(",")]

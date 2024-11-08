@@ -1,9 +1,9 @@
-from collections import defaultdict
-import re
-
-import numpy as np
 import heapq
+import re
+from collections import defaultdict
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 file1 = open('q22a.txt', 'r')
 

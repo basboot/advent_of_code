@@ -1,9 +1,3 @@
-import math
-
-import numpy as np
-
-from tools.advent_tools import *
-
 file1 = open('q21a.txt', 'r')
 lines = file1.readlines()
 

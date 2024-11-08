@@ -1,5 +1,3 @@
-import math
-from itertools import combinations, permutations
 import numpy as np
 
 # https://stackoverflow.com/questions/16452383/how-to-get-all-24-rotations-of-a-3-dimensional-array

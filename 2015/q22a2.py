@@ -1,20 +1,8 @@
 import heapq
-import itertools
-from collections import defaultdict
 from copy import copy
-from functools import total_ordering
-from random import random, shuffle
-
-import numpy as np
-from mip import maximize
-from numpy.core.defchararray import isnumeric
-from mip import *
-import re
-
-from sympy import divisors
-
-
 from dataclasses import dataclass
+from functools import total_ordering
+
 
 @total_ordering
 @dataclass

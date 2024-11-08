@@ -1,9 +1,6 @@
 import math
-from functools import cache
-from itertools import product
 
 import numpy as np
-from sympy import Symbol, solve, Piecewise, Eq
 
 file1 = open('q25a.txt', 'r')
 file_lines = file1.readlines()

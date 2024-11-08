@@ -1,5 +1,5 @@
 import math
-from collections import Counter
+
 import numpy as np
 from scipy.signal import convolve2d
 

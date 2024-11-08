@@ -1,7 +1,3 @@
-import math
-
-import numpy as np
-
 from tools.advent_tools import *
 
 file1 = open('q20a.txt', 'r')

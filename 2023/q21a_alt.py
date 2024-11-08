@@ -1,6 +1,4 @@
 # Using readlines()
-from tools.advent_tools import *
-import numpy as np
 
 file1 = open('q21a.txt', 'r')
 lines = file1.readlines()

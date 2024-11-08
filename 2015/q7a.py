@@ -1,6 +1,3 @@
-from collections import defaultdict
-
-import numpy as np
 from numpy.core.defchararray import isnumeric
 
 file1 = open('q7a.txt', 'r')

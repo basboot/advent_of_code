@@ -1,16 +1,8 @@
-import functools
 import math
-from collections import Counter, deque
+from collections import deque
 from dataclasses import dataclass
-from functools import cache, reduce
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 file1 = open('q15a.txt', 'r')
-
-import heapq
-from collections import defaultdict
 
 walls = set()
 

@@ -1,6 +1,5 @@
 # Using readlines()
 import heapq
-import math
 
 from itertools import count
 

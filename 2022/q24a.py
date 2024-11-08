@@ -1,8 +1,6 @@
 # Using readlines()
-import math
-import sys
-import numpy as np
 import heapq
+import sys
 
 from scipy.spatial.distance import cityblock
 

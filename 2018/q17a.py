@@ -3,8 +3,6 @@ import sys
 sys.setrecursionlimit(20000)
 
 import math
-from collections import Counter
-import numpy as np
 
 file1 = open('q17a.txt', 'r')
 lines = file1.readlines()

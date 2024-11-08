@@ -1,5 +1,4 @@
 # Using readlines()
-from tools.advent_tools import *
 
 import numpy as np
 

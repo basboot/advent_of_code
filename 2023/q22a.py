@@ -1,5 +1,4 @@
 # Using readlines()
-import math
 
 from tools.advent_tools import *
 

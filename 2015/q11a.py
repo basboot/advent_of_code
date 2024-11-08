@@ -1,5 +1,3 @@
-from fontTools.misc.cython import returns
-
 illegal = [ord(x) - ord('a') for x in list("iol")]
 start = [ord(x) - ord('a') for x in list("vzbxxyzz")]
 

@@ -1,6 +1,3 @@
-from collections import Counter
-import numpy as np
-
 file1 = open('q5a.txt', 'r')
 polymer = list(file1.readlines()[0].rstrip())
 

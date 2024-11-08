@@ -1,8 +1,6 @@
 # Using readlines()
-from networkx import minimum_edge_cut, shortest_path, descendants, all_neighbors
-
-from tools.advent_tools import *
 import networkx as nx
+from networkx import all_neighbors
 
 file1 = open('q12a.txt', 'r')
 lines = file1.readlines()

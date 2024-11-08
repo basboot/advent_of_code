@@ -1,9 +1,4 @@
-import math
-from collections import Counter
 from functools import cache
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 file1 = open('q15a.txt', 'r')
 

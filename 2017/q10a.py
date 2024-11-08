@@ -1,10 +1,3 @@
-from collections import Counter
-
-import numpy as np
-
-import networkx as nx
-from collections import defaultdict
-
 file1 = open('q10a.txt', 'r')
 lengths = [int(x) for x in file1.readlines()[0].rstrip().split(", ")]
 
