@@ -1,7 +1,7 @@
 file1 = open('q2a.txt', 'r')
 lines: [str] = file1.readlines()
 
-part: int = 1
+part: int = 2
 
 def is_safe(report: [int]) -> bool:
     inc_report: [int] = sorted(report)
@@ -41,3 +41,4 @@ for line in lines:
             break
 
 print(f"Part {part}, {total}")
+
