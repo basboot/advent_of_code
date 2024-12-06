@@ -1,5 +1,3 @@
-import numpy as np
-
 file1 = open('q6a.txt', 'r')
 lines = file1.readlines()
 
@@ -17,55 +15,30 @@ for i, line in enumerate(lines):
 
 grid_size = len(lines) # grid is a rectangle
 
-visited = set()
-path = set()
+def find_path_outside(guard, path, obstacles, place_obstacle=False):
+    position, direction = guard
 
-next_guard = start
+    loops = 0
+    tried = set()
+    while -1 < position.real < grid_size and -1 < position.imag < grid_size:
+        next_position = position + direction
 
-while -1 < next_guard.real < grid_size and -1 < next_guard.imag < grid_size:
-    # take step
-    guard = next_guard
-    visited.add(guard)
+        if next_position in obstacles:
+            direction *= 1j
+        else:
+            if place_obstacle and next_position not in tried and (-1 < next_position.real < grid_size and -1 < next_position.imag < grid_size):
+                tried.add(next_position) # do not try again, if crossing the same point, because if obstacle is here the guard will not follow this path anymore
+                if find_path_outside((position, direction), path.copy(), obstacles.union({next_position}), False) is None:
+                    loops += 1
+            position = next_position
 
-    # move or turn?
-    next_guard = guard + direction
-    if next_guard in obstacles:
-        next_guard = guard # reset pos
-        direction *= 1j # turn
+        if (position, direction) in path:
+            return None # None = loop (because the guard visited same position in same direction twice during a walk
 
-print(f"Part 1, {len(visited)}")
+        path.add((position, direction))
 
-def creates_loop(obstacle, start):
-    new_path = set()
-    direction = -1j
+    return path, loops
 
-    next_guard = start
-
-    while -1 < next_guard.real < grid_size and -1 < next_guard.imag < grid_size:
-        # take step
-        guard = next_guard
-
-        # guard has been in this pos + dir before => loop
-        if (guard, direction) in new_path:
-            return True
-
-        new_path.add((guard, direction))
-
-        # move or turn?
-        next_guard = guard + direction
-        if next_guard in obstacles or next_guard == obstacle:
-            next_guard = guard  # reset pos
-            direction *= 1j  # turn
-
-    return False # guard 'escapes', no loop
-
-total = 0
-# put obstacle on all visited places after start
-for position in visited:
-    if position == start:
-        continue
-    if creates_loop(position, start):
-        total += 1
-
-print("Part 2", total)
-
+path, loops = find_path_outside((start, -1j), set(), obstacles, True)
+print("Part 1", len(set([x for x, _ in (path)])))
+print("Part 2", loops)
