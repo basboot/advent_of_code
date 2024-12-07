@@ -14,15 +14,18 @@ def is_valid_calibration(target_value: int, current_value: int, current_equation
     if current_value > target_value:
         return False
 
+    if is_valid_calibration(target_value, current_value + equations[current_equation], current_equation + 1, equations, part):
+        return True
+    if is_valid_calibration(target_value, current_value * equations[current_equation], current_equation + 1, equations, part):
+        return True
+
     # perform operators (start with fastest growing to break earliest) to try to find a solution
     if part == 2:
         # also combine numbers for part 2
         if is_valid_calibration(target_value, int(str(current_value) + str(equations[current_equation])), current_equation + 1, equations, part):
             return True
-    if is_valid_calibration(target_value, current_value * equations[current_equation], current_equation + 1, equations, part):
-        return True
-    if is_valid_calibration(target_value, current_value + equations[current_equation], current_equation + 1, equations, part):
-        return True
+
+
 
     # all failed
     return False
