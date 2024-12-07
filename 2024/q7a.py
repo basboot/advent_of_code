@@ -1,9 +1,7 @@
-import numpy as np
-
 file1 = open('q7a.txt', 'r')
 lines = file1.readlines()
 
-def is_valid_calibration(target_value, current_value, current_equation, equations, part):
+def is_valid_calibration(target_value: int, current_value: int, current_equation: int, equations: [int], part: int) -> bool:
     # detect first value, and init search
     if current_equation == -1:
         return is_valid_calibration(target_value, equations[0], 1, equations, part)
@@ -31,8 +29,8 @@ def is_valid_calibration(target_value, current_value, current_equation, equation
 
 calibration_result = 0
 
-values = []
-calbration_equations = []
+values: [int] = []
+calbration_equations: [[int]] = []
 
 for line in lines:
     value_str, equations_str = line.rstrip().split(": ")
