@@ -1,12 +1,11 @@
+from itertools import chain
+
 import numpy as np
 
 file1 = open('q9a.txt', 'r')
 line = file1.readlines()[0].rstrip() + "0" # add zero for missing empty spot at end
 
-disk = []
-
-for i, files_free in enumerate(zip(line[0::2], line[1::2])):
-    disk += [(i, int(files_free[0])), (-1, int(files_free[1]))]
+disk = list(chain(*[[(i, int(files_free[0])), (-1, int(files_free[1]))] for i, files_free in enumerate(zip(line[0::2], line[1::2]))]))
 
 def find_space(file_to_move):
     file_content, file_size = disk[file_to_move]
@@ -66,14 +65,6 @@ while file_to_move_position > 0:
 
     file_to_move_position -= 1
 
-new_disk = []
-for file_content, file_size in disk:
-    # replace -1 with 0 for checksum
-    new_disk += [file_content if file_content > -1 else 0] * file_size
+new_disk = list(chain(*[[file_content] * file_size for file_content, file_size in disk]))
 
-
-total = 0
-for i, value in enumerate(new_disk):
-    total += value * i
-
-print(f"Part 2, {total}")
+print(f"Part 2, {np.sum((np.array(new_disk) * np.array(range(len(new_disk))))[np.array(new_disk) > 0])}")
