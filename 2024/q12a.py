@@ -25,16 +25,14 @@ def count_region(position, current_region, perimeter_edges):
             perimeter += 1
             # add current position to perimeter edges
             perimeter_edges.add((i, j, direction))
-
             continue
+
         next_area, next_perimeter, _, _ = count_region(next_position, current_region, perimeter_edges)
 
         area += next_area
         perimeter += next_perimeter
 
     return area, perimeter, current_region, perimeter_edges
-
-
 
 visited = set()
 
@@ -73,6 +71,7 @@ for i in range(garden_size):
     for j in range(garden_size):
         if (i, j) in visited:
             continue # no double
+
         area, perimeter, next_visited, perimeter_edges = count_region((i, j), set(), set())
         visited = visited.union(next_visited)
 
