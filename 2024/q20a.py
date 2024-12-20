@@ -3,7 +3,6 @@ from collections import deque
 file1 = open('q20a.txt', 'r')
 lines = file1.readlines()
 
-
 walls = set()
 
 start = goal = steps_no_cheating = None # to suppress warnings
@@ -31,16 +30,17 @@ def next_options(position, cheats, cheat_start, cheat_end):
         if (ni, nj) not in walls:
             # 1 means you stepped out of a wall, so lose the second cheat.
             # check is last move was cheating to detect cheat end
-            last_move_cheating = cheat_end == (-1, -1)
-            options.append(((ni, nj), 0 if cheats == 1 else cheats, cheat_start, (ni, nj) if last_move_cheating else cheat_end, last_move_cheating))
+            last_move_cheating = cheat_end is None and cheat_start is not None
+            options.append(((ni, nj), cheats, cheat_start, (ni, nj) if last_move_cheating else cheat_end, last_move_cheating))
         else:
             if cheats > 0:
                 # move in wall so remove one cheat, cheat starts if cheats was 2
                 # set cheat end to (-1, -1) to detect last move was cheating
-                options.append(((ni, nj), cheats - 1, (i, j) if cheats == 2 else cheat_start, (-1, -1), False))
+                options.append(((ni, nj), cheats - 1, (i, j), cheat_end, False))
     return options
 
-def bfs(start, goal, cheats):
+def bfs(start, goal, cheating):
+    cheats = 1 if cheating else 0
     # only interested in cheat points
     unique_cheats = set()
 
@@ -70,17 +70,21 @@ def bfs(start, goal, cheats):
     return None
 
 for steps in bfs(start, goal, 0):
-    steps_no_cheating = steps
+    steps_no_cheating, _, _ = steps
     # we only need the first without cheating as a reference
     break
+
+print("No cheats", steps_no_cheating)
 
 min_gain = 4
 
 total = 0
 for steps, cheat_start, cheat_end in bfs(start, goal, 2):
-    if steps > 20:
+    # ignore illegal cheats
+    if steps > steps_no_cheating - min_gain:
         break
     print("steps", steps, cheat_start, cheat_end)
+    total += 1
 
 
 
