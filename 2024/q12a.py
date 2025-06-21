@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 file1 = open('q12a.txt', 'r')
 lines = file1.readlines()
 
@@ -67,6 +69,8 @@ def count_sides(perimeter_edges):
 total = 0
 total2 = 0
 
+gardens_perimeter = defaultdict(int)
+
 for i in range(garden_size):
     for j in range(garden_size):
         if (i, j) in visited:
@@ -80,5 +84,10 @@ for i in range(garden_size):
         total += area * perimeter
         total2 += area * sides
 
+        gardens_perimeter[garden[(i, j)]] += area * sides
+
 print(f"Part 1, {total}")
 print(f"Part 2, {total2}")
+
+for g in sorted(list(gardens_perimeter.keys())):
+    print(f"{g}:", gardens_perimeter[g])
