@@ -1,6 +1,5 @@
 from collections import defaultdict
-
-from executing import cache
+from functools import cache
 
 file1 = open('q19a.txt', 'r')
 lines = file1.readlines()
