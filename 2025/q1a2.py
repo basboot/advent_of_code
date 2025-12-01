@@ -5,10 +5,11 @@ extra_zeros = 0
 with open("q1a.txt") as f:
     for line in f:
         code = line.strip()
-        direction, offset, rounds  = 1 if code[0] == "R" else -1, int(code[1:]) % 100, int(code[1:]) // 100
+        direction, offset, rounds = 1 if code[0] == "R" else -1, int(code[1:]) % 100, int(code[1:]) // 100
         offset *= direction
 
-        extra_zeros += ((current > 0) * (current + offset > 100 or current + offset < 0)) + rounds
+        # rounds always add zeros, going over 0 only when not coming from 0
+        extra_zeros += rounds + (current + offset > 100 or current + offset < 0 if (current > 0) else 0)
         current += offset
         current %= 100
 
