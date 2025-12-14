@@ -120,4 +120,4 @@ if __name__ == "__main__":
         if len(solution) > 0:
             total += 1
 
-print(f"Part 1: {total}")
+    print(f"Part 1: {total}")
